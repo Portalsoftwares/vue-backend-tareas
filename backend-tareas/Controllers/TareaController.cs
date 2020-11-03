@@ -48,5 +48,25 @@ namespace backend_tareas.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] Tarea tarea)
+        {
+            try
+            {
+                if(id != tarea.Id)
+                {
+                    return NotFound();
+                }
+                tarea.Estado = !tarea.Estado;
+                _context.Entry(tarea).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "La tarea fue actualizada con exito!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
