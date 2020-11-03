@@ -68,5 +68,26 @@ namespace backend_tareas.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var tarea = await _context.Tareas.FindAsync(id);
+                if(tarea == null)
+                {
+                    return NotFound();
+                }
+                _context.Tareas.Remove(tarea);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Tarea eliminada con exito!" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
